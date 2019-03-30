@@ -7,26 +7,42 @@ public class Graber : MonoBehaviour
     public PlayerController player;
     public GameObject obj;
 
-    void Update(){
-        if (Input.GetButtonUp("Fire3")) {
+    private Vector3 objPos;
+    void Update()
+    {
+        if (Input.GetButtonUp("Fire3"))
+        {
             obj.transform.SetParent(null);
             player.holding = false;
             obj = null;
+            objPos = Vector3.zero;
         }
 
     }
 
-    void OnTriggerStay(Collider other){
-        Debug.Log(other.gameObject.name);
+    void OnTriggerStay(Collider other)
+    {
+        //Debug.Log(other.gameObject.name);
 
-        if (other.CompareTag("Moveble") && Input.GetButtonDown("Fire3") && !player.crouching){
+        if (other.CompareTag("Moveble") && Input.GetButtonDown("Fire3") && !player.crouching && player.controller.isGrounded)
+        {
             obj = other.gameObject;
             obj.transform.SetParent(transform);
             Vector3 aux = obj.transform.localPosition;
-            aux.x *= 1.2f;
+            aux.x *= 1.1f;
             obj.transform.localPosition = aux;
+            objPos = obj.transform.localPosition;
             player.holding = true;
         }
+        if (objPos != Vector3.zero)
+            obj.transform.localPosition = objPos;
+    }
 
+    void OnTriggerExit(Collider other)
+    {
+        obj.transform.SetParent(null);
+        player.holding = false;
+        obj = null;
+        objPos = Vector3.zero;
     }
 }

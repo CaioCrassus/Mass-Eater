@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
+    public CharacterController controller { private set; get; }
 
     //movement
     public float speed = 6;
@@ -30,48 +31,65 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 move = Vector3.zero;
 
-    void Start(){
+    void Start()
+    {
         controller = GetComponent<CharacterController>();
     }
 
-    void Update(){
+    void Update()
+    {
         canJump = false;
 
-        move.x = canMove && !climbing? Input.GetAxis("Horizontal") * speed : 0;
+        move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : 0;
+        if (holding)
+        {
+            if ((move.x < 0 && transform.rotation.y == 0) || (move.x > 0 && transform.rotation.y == -180))
+                move.x = 0;
+        }
 
-        if (Input.GetButtonDown("Fire2") && dashCooldownTimer <= 0) {
+        /*if (Input.GetButtonDown("Fire2") && dashCooldownTimer <= 0)
+        {
             dashTimer = dashDuration;
             dashCooldownTimer = dashDuration + dashCooldown;
             move.y = 0;
             dashing = true;
         }
-        if (dashTimer > 0){
+        if (dashTimer > 0)
+        {
             dashTimer -= Time.deltaTime;
             move.x = transform.right.x * speed * dashSpeedMulti;
-        }else dashing = false;
+        }
+        else dashing = false;
         if (dashCooldownTimer > 0)
-            dashCooldownTimer -= Time.deltaTime;
+            dashCooldownTimer -= Time.deltaTime;*/
 
-        if (!holding){
-            if(Input.GetAxis("Horizontal") > 0) transform.localRotation = new Quaternion(0,0,0,0);
-            else if (Input.GetAxis("Horizontal") < 0) transform.localRotation = new Quaternion(0,180,0,0);
+        if (!holding)
+        {
+            if (Input.GetAxis("Horizontal") > 0) transform.rotation = new Quaternion(0, 0, 0, 0);
+            else if (Input.GetAxis("Horizontal") < 0) transform.localRotation = new Quaternion(0, 180, 0, 0);
         }
 
-        if(controller.isGrounded) move.y = 0;
+        if (controller.isGrounded) move.y = 0;
 
-        bool rightRay = Physics.Raycast(transform.position, Vector3.right, 5f, platformLayer);
-        bool leftRay = Physics.Raycast(transform.position, -Vector3.right, 5f, platformLayer);
+        bool rightRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.right, .45f, platformLayer);
+        bool leftRay = Physics.Raycast(transform.position + Vector3.up * .45f, -Vector3.right, .45f, platformLayer);
 
-        if (Input.GetButtonDown("Jump") && !holding && !crouching){
-            if (leftRay || rightRay || climbing){
+        Debug.DrawRay(transform.position + Vector3.up * .45f, -transform.right * .45f, Color.white);
+        Debug.DrawRay(transform.position + Vector3.up * .45f, transform.right * .45f, Color.white);
+
+        if (Input.GetButtonDown("Jump") && !holding && !crouching)
+        {
+            if ((leftRay || rightRay || climbing) && !controller.isGrounded)
+            {
                 move.x = (leftRay ? jumpSpeed : -jumpSpeed) * 10;
                 move.y = jumpSpeed * .8f;
             }
             else if (controller.isGrounded) move.y = jumpSpeed;
         }
 
-        if (!climbing && !dashing){
-            if((leftRay && Input.GetAxis("Horizontal") < 0 ) || (rightRay && Input.GetAxis("Horizontal") > 0 ))
+        if (!climbing && !dashing)
+        {
+            if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0))
                 move.y -= gravity * Time.deltaTime * .8f;
             else
                 move.y -= gravity * Time.deltaTime;
@@ -83,35 +101,43 @@ public class PlayerController : MonoBehaviour
 
 
         CrawlControl();
-        Debug.Log(move + " "+ leftRay + " " + rightRay);
+        //Debug.Log(move + " " + leftRay + " " + rightRay);
         controller.Move(move * Time.deltaTime);
     }
 
-    void CrawlControl(){
-        if(Input.GetButton("Fire1") && controller.isGrounded && !holding){
+    void CrawlControl()
+    {
+        if (Input.GetButton("Fire1") && controller.isGrounded && !holding)
+        {
             controller.height = .1f;
             controller.radius = .1f;
             crouching = true;
         }
 
-        if(Input.GetButtonUp("Fire1")){
-            controller.height = 2f;
-            controller.radius = .5f;
+        if (Input.GetButtonUp("Fire1"))
+        {
+            controller.height = .7f;
+            controller.radius = .36f;
             crouching = false;
         }
     }
 
-    void OnTriggerStay(Collider other){
-        if(other.CompareTag("Climbable") && Input.GetButtonDown("Fire3")){
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Climbable") && Input.GetButtonDown("Fire3"))
+        {
             climbing = true;
         }
-        if(other.CompareTag("Climbable") && Input.GetButtonUp("Fire3")){
+        if (other.CompareTag("Climbable") && Input.GetButtonUp("Fire3"))
+        {
             climbing = false;
         }
     }
 
-    void OnTriggerExit(Collider other){
-        if(other.CompareTag("Climbable")){
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Climbable"))
+        {
             climbing = false;
         }
     }
