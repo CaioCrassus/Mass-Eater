@@ -24,7 +24,7 @@ public class Graber : MonoBehaviour
     {
         //Debug.Log(other.gameObject.name);
 
-        if (other.CompareTag("Moveble") && Input.GetButtonDown("Fire3") && !player.crouching && player.controller.isGrounded)
+        if (player.canHold && other.CompareTag("Moveble") && Input.GetButtonDown("Fire3") && !player.crouching && player.controller.isGrounded)
         {
             obj = other.gameObject;
             obj.transform.SetParent(transform);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     //control booleans
     private bool canMove = true;
     private bool canJump = false;
+    public bool canHold = false;
     public bool holding = false;
     public bool crouching = false;
     private bool climbing = false;
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
         canJump = false;
 
         move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : 0;
-        if (holding)
+        if (canHold && holding)
         {
             if ((move.x < 0 && transform.rotation.y == 0) || (move.x > 0 && transform.rotation.y == -180))
                 move.x = 0;
@@ -103,6 +105,9 @@ public class PlayerController : MonoBehaviour
         CrawlControl();
         //Debug.Log(move + " " + leftRay + " " + rightRay);
         controller.Move(move * Time.deltaTime);
+        Vector3 aux = transform.position;
+        aux.z = 0;
+        transform.position = aux;
     }
 
     void CrawlControl()
@@ -119,6 +124,14 @@ public class PlayerController : MonoBehaviour
             controller.height = .7f;
             controller.radius = .36f;
             crouching = false;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Trap"))
+        {
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -139,6 +152,15 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Climbable"))
         {
             climbing = false;
+        }
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Debug.Log("Collision");
+        if (hit.gameObject.tag == "Enemy")
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }

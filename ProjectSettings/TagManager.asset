@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Moveble
   - Climbable
+  - Enemy
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -20,9 +22,9 @@ TagManager:
   - Platform
   - Climbable
   - Buttons
-  - 
-  - 
-  - 
+  - Player
+  - Moveble
+  - Trap
   - 
   - 
   - 
