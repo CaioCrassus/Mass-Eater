@@ -27,7 +27,7 @@ public class Scorpion : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, playerLayer);
 
@@ -43,6 +43,7 @@ public class Scorpion : MonoBehaviour
 
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, platformLayer))
                 {
+                    Debug.DrawRay(transform.position, dirToTarget * 100000, Color.white);
                     persue = true;
                 }
                 else

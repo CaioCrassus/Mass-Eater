@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         canJump = false;
 
@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(transform.position + Vector3.up * .45f, -transform.right * .45f, Color.white);
         Debug.DrawRay(transform.position + Vector3.up * .45f, transform.right * .45f, Color.white);
 
-
         if (!climbing && !dashing)
         {
             if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0))
@@ -100,7 +99,7 @@ public class PlayerController : MonoBehaviour
         {
             if ((leftRay || rightRay) && !controller.isGrounded)
             {
-                move.x = (leftRay ? jumpSpeed : -jumpSpeed) * 5;
+                move.x += (leftRay ? jumpSpeed : -jumpSpeed) * 5;
                 move.y = jumpSpeed;
             }
             else if (controller.isGrounded) move.y = jumpSpeed;

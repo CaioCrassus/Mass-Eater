@@ -816,7 +816,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 4096
-  viewAngle: 15
+  viewAngle: 20
   viewRadius: 3
 --- !u!1 &4981019035779319854
 GameObject:
