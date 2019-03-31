@@ -8,11 +8,13 @@ public class Graber : MonoBehaviour
     public GameObject obj;
 
     private Vector3 objPos;
+
+    public GameObject Boxes;
     void Update()
     {
         if (Input.GetButtonUp("Fire3"))
         {
-            obj.transform.SetParent(null);
+            obj.transform.SetParent(Boxes.transform);
             player.holding = false;
             obj = null;
             objPos = Vector3.zero;
@@ -40,7 +42,7 @@ public class Graber : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        obj.transform.SetParent(null);
+        obj.transform.SetParent(Boxes.transform);
         player.holding = false;
         obj = null;
         objPos = Vector3.zero;

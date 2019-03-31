@@ -808,10 +808,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   gravity: 20
-  persueSpeed: 4
   platformLayer:
     serializedVersion: 2
     m_Bits: 11063
+  persue: 0
+  persueSpeed: 4
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  viewAngle: 15
+  viewRadius: 3
 --- !u!1 &4981019035779319854
 GameObject:
   m_ObjectHideFlags: 0

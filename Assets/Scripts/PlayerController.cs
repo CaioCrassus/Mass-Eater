@@ -121,8 +121,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonUp("Fire1"))
         {
-            controller.height = .7f;
-            controller.radius = .36f;
+            controller.height = .6f;
+            controller.radius = .2f;
             crouching = false;
         }
     }
