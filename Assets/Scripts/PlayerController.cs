@@ -151,7 +151,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Trap"))
         {
-            SceneManager.LoadScene(0);
+            Lose.SetActive(true);
+            Time.timeScale = 0;
         }
     }
 
@@ -175,12 +176,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    public GameObject Lose;
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Debug.Log("Collision");
         if (hit.gameObject.tag == "Enemy" && canDie)
         {
-            SceneManager.LoadScene(0);
+            Lose.SetActive(true);
+            Time.timeScale = 0;
         }
     }
 }
