@@ -959,7 +959,12 @@ PrefabInstance:
     - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
         type: 3}
       propertyPath: interactibleTag
-      value: Player
+      value: Moveble
+      objectReference: {fileID: 0}
+    - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
+        type: 3}
+      propertyPath: playerCanActivate
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffc790e2ed596e64ab6950454a3b4833, type: 3}
@@ -5089,7 +5094,7 @@ PrefabInstance:
     - target: {fileID: 6874474901142293731, guid: f5dda2442aaed40499394fb217aec839,
         type: 3}
       propertyPath: distance
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dda2442aaed40499394fb217aec839, type: 3}
