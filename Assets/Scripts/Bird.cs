@@ -38,4 +38,12 @@ public class Bird : MonoBehaviour
         }
         controller.Move(move * Time.deltaTime);
     }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Trap"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
