@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public bool crouching = false;
     private bool climbing = false;
     private bool dashing = false;
+    private bool canDie = true;
 
     //dash
     public float dashDuration = .5f;
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         canJump = false;
 
-        move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : 0;
+        move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : move.x;
         if (canHold && holding)
         {
             if ((move.x < 0 && transform.rotation.y == 0) || (move.x > 0 && transform.rotation.y == -180))
@@ -79,20 +80,14 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(transform.position + Vector3.up * .45f, -transform.right * .45f, Color.white);
         Debug.DrawRay(transform.position + Vector3.up * .45f, transform.right * .45f, Color.white);
 
-        if (Input.GetButtonDown("Jump") && !holding && !crouching)
-        {
-            if ((leftRay || rightRay || climbing) && !controller.isGrounded)
-            {
-                move.x = (leftRay ? jumpSpeed : -jumpSpeed) * 10;
-                move.y = jumpSpeed * .8f;
-            }
-            else if (controller.isGrounded) move.y = jumpSpeed;
-        }
 
         if (!climbing && !dashing)
         {
             if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0))
-                move.y -= gravity * Time.deltaTime * .8f;
+            {
+                move.y = 0;
+                move.y -= gravity * Time.deltaTime * 1.8f;
+            }
             else
                 move.y -= gravity * Time.deltaTime;
         }
@@ -101,6 +96,15 @@ public class PlayerController : MonoBehaviour
             move.y = Input.GetAxis("Vertical") * speed * .8f;
         }
 
+        if (Input.GetButtonDown("Jump") && !holding && !crouching)
+        {
+            if ((leftRay || rightRay) && !controller.isGrounded)
+            {
+                move.x = (leftRay ? jumpSpeed : -jumpSpeed) * 5;
+                move.y = jumpSpeed;
+            }
+            else if (controller.isGrounded) move.y = jumpSpeed;
+        }
 
         CrawlControl();
         //Debug.Log(move + " " + leftRay + " " + rightRay);
@@ -108,7 +112,23 @@ public class PlayerController : MonoBehaviour
         Vector3 aux = transform.position;
         aux.z = 0;
         transform.position = aux;
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            canDie = !canDie;
+            ImortalCheat.SetActive(!canDie);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            canHold = !canHold;
+            BoxCheat.SetActive(canHold);
+        }
+
+
     }
+
+    public GameObject ImortalCheat;
+    public GameObject BoxCheat;
 
     void CrawlControl()
     {
@@ -158,7 +178,7 @@ public class PlayerController : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Debug.Log("Collision");
-        if (hit.gameObject.tag == "Enemy")
+        if (hit.gameObject.tag == "Enemy" && canDie)
         {
             SceneManager.LoadScene(0);
         }
