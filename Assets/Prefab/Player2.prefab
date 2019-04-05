@@ -1093,6 +1093,7 @@ MonoBehaviour:
   speed: 6
   jumpSpeed: 7
   gravity: 20
+  wallJumpSpeed: 0
   canHold: 0
   holding: 0
   crouching: 0
@@ -1102,6 +1103,9 @@ MonoBehaviour:
   platformLayer:
     serializedVersion: 2
     m_Bits: 512
+  ImortalCheat: {fileID: 0}
+  BoxCheat: {fileID: 0}
+  Lose: {fileID: 0}
 --- !u!143 &7482846487947889594
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1113,7 +1117,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 0.75
+  m_Height: 0.6
   m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.3

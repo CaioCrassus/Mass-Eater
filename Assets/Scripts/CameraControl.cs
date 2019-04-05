@@ -10,22 +10,28 @@ public class CameraControl : MonoBehaviour
     public Vector3 maxPos;
 
     public float rotationX = 5;
+
+    public GameObject target;
     // Start is called before the first frame update
     void Start()
     {
-
+        resetTarget();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, Player.transform.position, .1f);
+        transform.position = Vector3.Lerp(transform.position, target.transform.position, .1f);
 
 
         Vector3 aux = transform.eulerAngles;
         aux.y = map(transform.position.x, minPos.x, maxPos.x, -rotationX, rotationX);
         transform.eulerAngles = aux;
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, minPos.x, maxPos.x), Mathf.Clamp(transform.position.y, minPos.y, maxPos.y), -6);
+    }
+
+    public void resetTarget(){
+        target = Player;
     }
 
     float map(float s, float a1, float a2, float b1, float b2)

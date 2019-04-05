@@ -37,7 +37,7 @@ public class Scorpion : MonoBehaviour
         {
             player = targetsInViewRadius[0].gameObject;
             Vector3 dirToTarget = (player.transform.position - transform.position).normalized;
-            if (Vector2.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+            if (Vector2.Angle(transform.right, dirToTarget) < viewAngle / 2)
             {
                 float dstToTarget = Vector3.Distance(transform.position, player.transform.position);
 

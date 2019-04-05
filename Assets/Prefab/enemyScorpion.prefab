@@ -760,8 +760,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.33
-  m_Height: 1.53
-  m_Direction: 2
+  m_Height: 1.11
+  m_Direction: 0
   m_Center: {x: 0, y: 0.36, z: 0}
 --- !u!135 &4890012492501116077
 SphereCollider:
@@ -816,8 +816,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 4096
-  viewAngle: 20
-  viewRadius: 3
+  viewAngle: 60
+  viewRadius: 5
 --- !u!1 &4981019035779319854
 GameObject:
   m_ObjectHideFlags: 0

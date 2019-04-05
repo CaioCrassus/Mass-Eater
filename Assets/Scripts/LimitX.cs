@@ -10,18 +10,21 @@ public class LimitX : MonoBehaviour
 
     private float y;
 
+    public bool isHeld = false;
+
     void Start()
     {
         y = transform.position.y;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 aux = transform.position;// transform.TransformPoint(transform.position);
         if (aux.x < minX) aux.x = minX;
         else if (aux.x > maxX) aux.x = maxX;
         aux.y = y;
+        //if (!isHeld)
         transform.position = aux;//transform.InverseTransformPoint(aux);
     }
 }

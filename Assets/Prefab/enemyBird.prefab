@@ -407,8 +407,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vertical: 1
-  distance: 0
   speed: 2
+  platform:
+    serializedVersion: 2
+    m_Bits: 11063
 --- !u!1 &6982349156286908323
 GameObject:
   m_ObjectHideFlags: 0
