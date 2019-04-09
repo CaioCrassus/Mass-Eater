@@ -16,7 +16,7 @@ public class Activate : MonoBehaviour
     {
         mainCam.gameObject.GetComponent<CameraControl>().target = obj;
         PlayerController.instance.cameraOnPlayer = false;
-        Invoke("runMecanism", .5f);
+        Invoke("runMecanism", .8f);
     }
 
     void runMecanism()

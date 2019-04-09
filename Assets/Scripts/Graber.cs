@@ -35,6 +35,7 @@ public class Graber : MonoBehaviour
             obj.transform.localPosition = aux;
             objPos = obj.transform.localPosition;
             player.holding = true;
+            other.gameObject.GetComponent<LimitX>().isHeld = true;
         }
         if (objPos != Vector3.zero)
             obj.transform.localPosition = objPos;
@@ -46,5 +47,6 @@ public class Graber : MonoBehaviour
         player.holding = false;
         obj = null;
         objPos = Vector3.zero;
+        other.gameObject.GetComponent<LimitX>().isHeld = false;
     }
 }

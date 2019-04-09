@@ -12,6 +12,8 @@ public class CameraControl : MonoBehaviour
     public float rotationX = 5;
 
     public GameObject target;
+
+    public float upDownLook = 3;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,8 @@ public class CameraControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, target.transform.position, .1f);
+        float v = Input.GetAxis("Vertical");
+        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0,v*upDownLook,0), .02f);
 
 
         Vector3 aux = transform.eulerAngles;

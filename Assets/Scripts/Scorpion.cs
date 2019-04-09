@@ -20,6 +20,8 @@ public class Scorpion : MonoBehaviour
     public float viewRadius = 3;
     private Vector3 move;
 
+    public bool playerOnView = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,12 +38,12 @@ public class Scorpion : MonoBehaviour
         if (targetsInViewRadius.Length > 0)
         {
             player = targetsInViewRadius[0].gameObject;
-            Vector3 dirToTarget = (player.transform.position - transform.position).normalized;
-            if (Vector2.Angle(transform.right, dirToTarget) < viewAngle / 2)
+            /*Vector3 dirToTarget = (player.transform.position - transform.position).normalized;
+            if (Vector2.Angle(transform.right + new Vector3(0, .45f), dirToTarget) < viewAngle / 2)
             {
                 float dstToTarget = Vector3.Distance(transform.position, player.transform.position);
 
-                if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, platformLayer))
+                if (playerOnView && !Physics.Raycast(transform.position + new Vector3(0, .45f), dirToTarget, dstToTarget, platformLayer))
                 {
                     Debug.DrawRay(transform.position, dirToTarget * 100000, Color.white);
                     persue = true;
@@ -50,6 +52,18 @@ public class Scorpion : MonoBehaviour
                 {
                     persue = false;
                 }
+            }*/
+
+            Vector3 dirToTarget = (player.transform.position - transform.position).normalized;
+            float dstToTarget = Vector3.Distance(transform.position, player.transform.position);
+            if (playerOnView && !Physics.Raycast(transform.position + new Vector3(0, .45f), dirToTarget, dstToTarget, platformLayer))
+            {
+                Debug.DrawRay(transform.position, dirToTarget * 100000, Color.white);
+                persue = true;
+            }
+            else
+            {
+                persue = false;
             }
         }
 

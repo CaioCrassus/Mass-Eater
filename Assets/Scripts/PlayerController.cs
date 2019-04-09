@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public bool canHold = false;
     public bool holding = false;
     public bool crouching = false;
-    private bool climbing = false;
+    public bool climbing = false;
     private bool dashing = false;
     private bool canDie = true;
     public bool cameraOnPlayer = true;
@@ -56,7 +56,9 @@ public class PlayerController : MonoBehaviour
             move.y -= gravity * Time.fixedDeltaTime * 8.5f;
         }
 
-        move.x = canMove && !climbing && cameraOnPlayer ? Input.GetAxis("Horizontal") * speed : move.x;
+        move.x = canMove && !climbing? Input.GetAxis("Horizontal") * speed : move.x;
+
+        if (!cameraOnPlayer) move.x = 0;
         if (canHold && holding)
         {
             if ((move.x < 0 && transform.rotation.y == 0) || (move.x > 0 && transform.rotation.y == -180))

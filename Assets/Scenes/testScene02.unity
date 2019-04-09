@@ -2768,6 +2768,11 @@ PrefabInstance:
       propertyPath: maxX
       value: 20.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6875508662996868232, guid: 029fed5289ae89f4e902cb89b38d44da,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 029fed5289ae89f4e902cb89b38d44da, type: 3}
 --- !u!4 &842764341 stripped
@@ -4142,6 +4147,7 @@ MonoBehaviour:
   maxPos: {x: 15, y: 11, z: -6}
   rotationX: 3
   target: {fileID: 0}
+  upDownLook: 3
 --- !u!1 &1120414892
 GameObject:
   m_ObjectHideFlags: 0

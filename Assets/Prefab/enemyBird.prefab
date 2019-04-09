@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2243408102055113650}
   - component: {fileID: 102988625111313389}
   - component: {fileID: 5906545400590704081}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cylinder (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 450611181195219235}
   - component: {fileID: 2875159951357127382}
   - component: {fileID: 1472808142851588183}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 4036863912401128124}
   - component: {fileID: 372818053921724092}
   - component: {fileID: 7159216227934999879}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 8967627472423286565}
   - component: {fileID: 1195173981139405588}
   - component: {fileID: 3009448411969356960}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 5728506365670550597}
   - component: {fileID: 7869102159878491447}
   - component: {fileID: 6874474901142293731}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: enemyBird
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -422,7 +422,7 @@ GameObject:
   - component: {fileID: 8140496697621567632}
   - component: {fileID: 1585587396195838442}
   - component: {fileID: 3498443239524865230}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 3901298632260217628}
   - component: {fileID: 2543258271312369516}
   - component: {fileID: 6810889034724441402}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

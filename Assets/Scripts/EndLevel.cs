@@ -23,6 +23,7 @@ public class EndLevel : MonoBehaviour
         if (col.CompareTag("Player"))
         {
             endMenu.SetActive(true);
+            Debug.Log("GameEnded");
             Time.timeScale = 0;
         }
     }
