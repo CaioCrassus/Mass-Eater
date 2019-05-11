@@ -14,6 +14,9 @@ public class CameraControl : MonoBehaviour
     public GameObject target;
 
     public float upDownLook = 3;
+
+    public float lookTimeToActivate = 1f;
+    private float lookTimer;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +27,13 @@ public class CameraControl : MonoBehaviour
     void Update()
     {
         float v = Input.GetAxis("Vertical");
+        if (PlayerController.instance.isMoving) v = 0;
+        if(v == 0){
+            lookTimer -= Time.deltaTime;
+            if (Input.GetButtonDown("Vertical")) lookTimer = lookTimeToActivate;
+            if (lookTimer > 0) v = 0;
+        }
         transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0,v*upDownLook,0), .02f);
-
 
         Vector3 aux = transform.eulerAngles;
         aux.y = map(transform.position.x, minPos.x, maxPos.x, -rotationX, rotationX);

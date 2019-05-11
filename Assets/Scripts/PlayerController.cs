@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     public CharacterController controller { private set; get; }
 
-    public static PlayerController instance {private set; get;}
+    public static PlayerController instance { private set; get; }
 
     //movement
     public float speed = 6;
@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private bool dashing = false;
     private bool canDie = true;
     public bool cameraOnPlayer = true;
+    public bool isMoving = false;
+    private bool onWall = false;
 
     //dash
     public float dashDuration = .5f;
@@ -34,8 +36,6 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 3f;
     private float dashTimer = 0;
     private float dashCooldownTimer = 0;
-
-    private int wallJumpMark = 0;
 
     public LayerMask platformLayer;
 
@@ -56,7 +56,12 @@ public class PlayerController : MonoBehaviour
             move.y -= gravity * Time.fixedDeltaTime * 8.5f;
         }
 
-        move.x = canMove && !climbing? Input.GetAxis("Horizontal") * speed : move.x;
+        move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : move.x;
+        if (move.x != 0)
+        {
+            isMoving = true;
+        }
+        else isMoving = false;
 
         if (!cameraOnPlayer) move.x = 0;
         if (canHold && holding)
@@ -85,11 +90,10 @@ public class PlayerController : MonoBehaviour
 
         if (controller.isGrounded)
         {
-            wallJumpMark = 0;
             move.y = 0;
         }
-        bool rightRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.right, .45f, platformLayer);
-        bool leftRay = Physics.Raycast(transform.position + Vector3.up * .45f, -Vector3.right, .45f, platformLayer);
+        bool rightRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.right, .5f, platformLayer);
+        bool leftRay = Physics.Raycast(transform.position + Vector3.up * .45f, -Vector3.right, .5f, platformLayer);
 
         Debug.DrawRay(transform.position + Vector3.up * .45f, -transform.right * .45f, Color.white);
         Debug.DrawRay(transform.position + Vector3.up * .45f, transform.right * .45f, Color.white);
@@ -100,11 +104,15 @@ public class PlayerController : MonoBehaviour
         {
             if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0))
             {
+                onWall = true;
                 if (move.y > 0 && canMove) move.y = 0;
                 move.y -= gravity * Time.fixedDeltaTime * .05f;
             }
             else
+            {
+                onWall = false;
                 move.y -= gravity * Time.fixedDeltaTime;
+            }
         }
         else if (climbing)
         {
@@ -113,11 +121,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && !holding && !crouching)
         {
-            int wall = leftRay ? 1 : 2;
             if ((leftRay || rightRay) && !controller.isGrounded)
             {
-
-                wallJumpMark = leftRay ? 1 : 2;
                 move.x = leftRay ? wallJumpSpeed : -wallJumpSpeed;
                 FlipPlayer();
                 move.y = jumpSpeed;
@@ -125,7 +130,6 @@ public class PlayerController : MonoBehaviour
             }
             else if (controller.isGrounded)
             {
-                wallJumpMark = 0;
                 move.y = jumpSpeed;
             }
         }

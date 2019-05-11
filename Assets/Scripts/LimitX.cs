@@ -12,20 +12,22 @@ public class LimitX : MonoBehaviour
 
     public bool isHeld = false;
 
+    private Rigidbody rd;
     void Start()
     {
-        stayPos.y = transform.position.y;
-        stayPos.x = transform.position.x;
+        rd = GetComponent<Rigidbody>();
+        stayPos.y = rd.position.y;
+        stayPos.x = rd.position.x;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 aux = transform.position;// transform.TransformPoint(transform.position);
-        if (isHeld) stayPos.x = transform.position.x;
+        Vector3 aux = rd.position;// transform.TransformPoint(transform.position);
+        if (isHeld) stayPos.x = rd.position.x;
         else aux.x = stayPos.x;
         aux.x = Mathf.Clamp(aux.x, minX, maxX);
         aux.y = stayPos.y;
-        transform.position = aux;//transform.InverseTransformPoint(aux);
+        rd.position = aux;//transform.InverseTransformPoint(aux);
     }
 }
