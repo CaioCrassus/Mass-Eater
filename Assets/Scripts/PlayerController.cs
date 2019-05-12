@@ -41,6 +41,17 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 move = Vector3.zero;
 
+
+    private float life = 100;
+    public SkinnedMeshRenderer tank;
+    private float invencibleTime = .5f;
+    private float invencibleTimer;
+    private bool justDamaged = false;
+    private int damageDirection;
+
+
+    public static Vector3 respawnPos;
+
     void Start()
     {
         instance = this;
@@ -49,6 +60,12 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (invencibleTimer > 0)
+        {
+            invencibleTimer -= Time.deltaTime;
+        }
+
+
         canJump = false;
         if (!canMove && move.y < 0)
         {
@@ -138,6 +155,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (justDamaged)
+        {
+            move.x = speed * damageDirection;
+            move.y = jumpSpeed;
+            justDamaged = false;
+        }
+
         //if ((controller.collisionFlags & CollisionFlags.Above) != 0) move.y -= gravity * Time.fixedDeltaTime;
 
         CrawlControl();
@@ -215,10 +239,19 @@ public class PlayerController : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Debug.Log("Collision");
-        if (hit.gameObject.tag == "Enemy" && canDie)
+        if (hit.gameObject.tag == "Enemy" && canDie && invencibleTimer <= 0)
         {
-            Lose.SetActive(true);
-            Time.timeScale = 0;
+            invencibleTimer = invencibleTime;
+            life = Mathf.Clamp(life - 33.4f, 0, 100);
+            tank.SetBlendShapeWeight(0, life);
+            justDamaged = true;
+            if (hit.transform.position.x > transform.position.x) damageDirection = 1;
+            else damageDirection = -1;
+            if (life <= 0)
+            {
+                Lose.SetActive(true);
+                Time.timeScale = 0;
+            }
         }
     }
 

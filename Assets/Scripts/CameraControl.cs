@@ -39,9 +39,9 @@ public class CameraControl : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0, v * upDownLook, 0), .02f);
 
         Vector3 aux = transform.eulerAngles;
-        aux.y = map(transform.position.x, minPos.x, maxPos.x, -rotationX, rotationX);
+        aux.y = map(transform.position.x, limit.minPos.x, limit.maxPos.x, -rotationX, rotationX);
         transform.eulerAngles = aux;
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, minPos.x, maxPos.x), Mathf.Clamp(transform.position.y, minPos.y, maxPos.y), -6);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, limit.minPos.x, limit.maxPos.x), Mathf.Clamp(transform.position.y, limit.minPos.y, limit.maxPos.y), -6);
     }
 
     public void resetTarget()
