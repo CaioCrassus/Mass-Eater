@@ -9,6 +9,8 @@ public class CameraControl : MonoBehaviour
     public Vector3 minPos;
     public Vector3 maxPos;
 
+    public static CameraLevelLimit limit;
+
     public float rotationX = 5;
 
     public GameObject target;
@@ -28,12 +30,13 @@ public class CameraControl : MonoBehaviour
     {
         float v = Input.GetAxis("Vertical");
         if (PlayerController.instance.isMoving) v = 0;
-        if(v == 0){
+        if (v == 0)
+        {
             lookTimer -= Time.deltaTime;
             if (Input.GetButtonDown("Vertical")) lookTimer = lookTimeToActivate;
             if (lookTimer > 0) v = 0;
         }
-        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0,v*upDownLook,0), .02f);
+        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0, v * upDownLook, 0), .02f);
 
         Vector3 aux = transform.eulerAngles;
         aux.y = map(transform.position.x, minPos.x, maxPos.x, -rotationX, rotationX);
@@ -41,7 +44,8 @@ public class CameraControl : MonoBehaviour
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, minPos.x, maxPos.x), Mathf.Clamp(transform.position.y, minPos.y, maxPos.y), -6);
     }
 
-    public void resetTarget(){
+    public void resetTarget()
+    {
         target = Player;
     }
 

@@ -16,18 +16,18 @@ public class LimitX : MonoBehaviour
     void Start()
     {
         rd = GetComponent<Rigidbody>();
-        stayPos.y = rd.position.y;
-        stayPos.x = rd.position.x;
+        stayPos.y = transform.position.y;
+        stayPos.x = transform.position.x;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 aux = rd.position;// transform.TransformPoint(transform.position);
-        if (isHeld) stayPos.x = rd.position.x;
+        Vector3 aux = transform.position;// transform.TransformPoint(transform.position);
+        if (isHeld) stayPos.x = transform.position.x;
         else aux.x = stayPos.x;
         aux.x = Mathf.Clamp(aux.x, minX, maxX);
         aux.y = stayPos.y;
-        rd.position = aux;//transform.InverseTransformPoint(aux);
+        transform.position = aux;//transform.InverseTransformPoint(aux);
     }
 }

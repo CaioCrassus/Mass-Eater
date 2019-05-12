@@ -64,11 +64,11 @@ public class PlayerController : MonoBehaviour
         else isMoving = false;
 
         if (!cameraOnPlayer) move.x = 0;
-        if (canHold && holding)
+        /* if (canHold && holding)
         {
             if ((move.x < 0 && transform.rotation.y == 0) || (move.x > 0 && transform.rotation.y == -180))
                 move.x = 0;
-        }
+        }*/
 
         /*if (Input.GetButtonDown("Fire2") && dashCooldownTimer <= 0)
         {
@@ -92,17 +92,20 @@ public class PlayerController : MonoBehaviour
         {
             move.y = 0;
         }
+
+        bool upRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.up, .2f, platformLayer);
         bool rightRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.right, .5f, platformLayer);
         bool leftRay = Physics.Raycast(transform.position + Vector3.up * .45f, -Vector3.right, .5f, platformLayer);
 
         Debug.DrawRay(transform.position + Vector3.up * .45f, -transform.right * .45f, Color.white);
         Debug.DrawRay(transform.position + Vector3.up * .45f, transform.right * .45f, Color.white);
+        Debug.DrawRay(transform.position + Vector3.up * .45f, transform.up * .2f, Color.white);
 
-
+        if (upRay && move.y > 0) move.y = 0;
 
         if (!climbing && !dashing)
         {
-            if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0))
+            if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0) && !controller.isGrounded)
             {
                 onWall = true;
                 if (move.y > 0 && canMove) move.y = 0;
@@ -121,6 +124,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && !holding && !crouching)
         {
+            Debug.Log("Jump");
             if ((leftRay || rightRay) && !controller.isGrounded)
             {
                 move.x = leftRay ? wallJumpSpeed : -wallJumpSpeed;
@@ -137,7 +141,7 @@ public class PlayerController : MonoBehaviour
         //if ((controller.collisionFlags & CollisionFlags.Above) != 0) move.y -= gravity * Time.fixedDeltaTime;
 
         CrawlControl();
-        Debug.Log(move);
+        //Debug.Log(move);
         controller.Move(move * Time.fixedDeltaTime);
         Vector3 aux = transform.position;
         aux.z = 0;
