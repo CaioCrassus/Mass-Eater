@@ -133,6 +133,7 @@ public class PlayerController : MonoBehaviour
                 onWall = false;
                 move.y -= gravity * Time.fixedDeltaTime;
             }
+            move.y = Mathf.Min(move.y, gravity);
         }
         else if (climbing)
         {
@@ -199,8 +200,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonUp("Fire1"))
         {
-            controller.height = .6f;
-            controller.radius = .2f;
+            controller.height = .8f;
+            controller.radius = .3f;
             crouching = false;
         }
     }
