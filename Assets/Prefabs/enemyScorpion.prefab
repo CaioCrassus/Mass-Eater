@@ -926,6 +926,8 @@ MonoBehaviour:
   viewAngle: 30
   viewRadius: 10
   playerOnView: 0
+  walkSound: {fileID: 8300000, guid: 319cfd65bde349d4a85e3da6447506b6, type: 3}
+  agroSound: {fileID: 8300000, guid: e7378bfc63bf93943a277e9d1f406516, type: 3}
 --- !u!82 &748994164750334066
 AudioSource:
   m_ObjectHideFlags: 0
@@ -933,9 +935,10 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4722666535282341958}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243480041965747812, guid: 97bce902d2c048e48a069f5efefff716,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 319cfd65bde349d4a85e3da6447506b6, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -946,7 +949,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 0.40866357
   MaxDistance: 6
   Pan2D: 0
   rolloffMode: 2
@@ -1018,7 +1021,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

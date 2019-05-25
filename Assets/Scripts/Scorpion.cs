@@ -10,6 +10,7 @@ public class Scorpion : MonoBehaviour
     public float gravity = 20;
 
     private CharacterController controller;
+    private AudioSource audioSource;
 
     public LayerMask platformLayer;
 
@@ -22,10 +23,14 @@ public class Scorpion : MonoBehaviour
 
     public bool playerOnView = false;
 
+
+    public AudioClip walkSound;
+    public AudioClip agroSound;
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -60,10 +65,14 @@ public class Scorpion : MonoBehaviour
             {
                 Debug.DrawRay(transform.position, dirToTarget * 100000, Color.white);
                 persue = true;
+                audioSource.clip = agroSound;
+                if (!audioSource.isPlaying) audioSource.Play();
             }
             else
             {
                 persue = false;
+                audioSource.clip = walkSound;
+                if (!audioSource.isPlaying) audioSource.Play();
             }
         }
 

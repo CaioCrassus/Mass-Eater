@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Activate : MonoBehaviour
 {
     private static Camera mainCam;
     public GameObject obj;
 
+    public AudioClip open;
+    public AudioClip close;
+
+    private AudioSource audioSource;
+
     void Start()
     {
         mainCam = Camera.main;
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void run()
@@ -21,8 +28,19 @@ public class Activate : MonoBehaviour
 
     void runMecanism()
     {
-        if (obj.activeSelf) obj.SetActive(false);
-        else obj.SetActive(true);
+        if (obj.activeSelf)
+        {
+            obj.SetActive(false);
+            audioSource.clip = close;
+            audioSource.Play();
+        }
+        else
+        {
+            obj.SetActive(true);
+            audioSource.clip = open;
+            audioSource.Play();
+        }
+
         Invoke("BackToMainCamera", .5f);
     }
 

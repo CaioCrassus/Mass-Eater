@@ -18,6 +18,16 @@ public class PressPlate : MonoBehaviour
 
     public string interactibleTag;
 
+    public AudioClip box;
+
+    public AudioClip player;
+
+    private AudioSource audioSource;
+
+    public void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.layer != 9 && col.CompareTag(interactibleTag))
@@ -37,6 +47,12 @@ public class PressPlate : MonoBehaviour
                 pressed = true;
                 toActivate.run();
             }
+
+            if (col.CompareTag("Player")) audioSource.clip = player;
+            else audioSource.clip = box;
+
+            audioSource.Play();
+
         }
     }
 
