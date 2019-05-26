@@ -31,14 +31,12 @@ public class Activate : MonoBehaviour
         if (obj.activeSelf)
         {
             obj.SetActive(false);
-            audioSource.clip = close;
-            audioSource.Play();
+            audioSource.PlayOneShot(close);
         }
         else
         {
             obj.SetActive(true);
-            audioSource.clip = open;
-            audioSource.Play();
+            audioSource.PlayOneShot(open);
         }
 
         Invoke("BackToMainCamera", .5f);

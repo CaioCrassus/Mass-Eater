@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
     public CharacterController controller { private set; get; }
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public bool cameraOnPlayer = true;
     public bool isMoving = false;
     private bool onWall = false;
+    private bool isJumping = false;
 
     //dash
     public float dashDuration = .5f;
@@ -52,10 +53,18 @@ public class PlayerController : MonoBehaviour
 
     public static Vector3 respawnPos;
 
+
+    private AudioSource audioSource;
+    public AudioClip walkAudio;
+    public AudioClip jumpAudio;
+    public AudioClip landingAudio;
+    public AudioClip damageAudio;
+
     void Start()
     {
         instance = this;
         controller = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -108,6 +117,11 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded)
         {
             move.y = 0;
+            if (isJumping)
+            {
+                isJumping = false;
+                audioSource.PlayOneShot(landingAudio);
+            }
         }
 
         bool upRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.up, .2f, platformLayer);
@@ -142,6 +156,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && !holding && !crouching)
         {
+            isJumping = true;
             Debug.Log("Jump");
             if ((leftRay || rightRay) && !controller.isGrounded)
             {
@@ -154,6 +169,7 @@ public class PlayerController : MonoBehaviour
             {
                 move.y = jumpSpeed;
             }
+            audioSource.PlayOneShot(jumpAudio);
         }
 
         if (justDamaged)
@@ -161,12 +177,20 @@ public class PlayerController : MonoBehaviour
             move.x = speed * damageDirection;
             move.y = jumpSpeed;
             justDamaged = false;
+            audioSource.PlayOneShot(damageAudio);
         }
 
         //if ((controller.collisionFlags & CollisionFlags.Above) != 0) move.y -= gravity * Time.fixedDeltaTime;
 
+        if (controller.isGrounded && move.x != 0 && audioSource.clip != walkAudio && !audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(walkAudio);
+            audioSource.loop = true;
+        }
         CrawlControl();
-        //Debug.Log(move);
+
+        if (move.x == 0/* && audioSource.isPlaying && audioSource.clip == walkAudio*/) audioSource.Stop();
+
         controller.Move(move * Time.fixedDeltaTime);
         Vector3 aux = transform.position;
         aux.z = 0;

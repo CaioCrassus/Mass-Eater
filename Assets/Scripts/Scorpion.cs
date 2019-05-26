@@ -65,14 +65,12 @@ public class Scorpion : MonoBehaviour
             {
                 Debug.DrawRay(transform.position, dirToTarget * 100000, Color.white);
                 persue = true;
-                audioSource.clip = agroSound;
-                if (!audioSource.isPlaying) audioSource.Play();
+                if (!audioSource.isPlaying) audioSource.PlayOneShot(agroSound);
             }
             else
             {
                 persue = false;
-                audioSource.clip = walkSound;
-                if (!audioSource.isPlaying) audioSource.Play();
+                if (!audioSource.isPlaying) audioSource.PlayOneShot(walkSound);
             }
         }
 
