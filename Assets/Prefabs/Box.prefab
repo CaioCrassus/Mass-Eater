@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8918173271036309070}
   - component: {fileID: 8918173271036309065}
   - component: {fileID: 8918173271036309064}
-  - component: {fileID: 5876713038448564683}
   - component: {fileID: 6875508662996868232}
   - component: {fileID: 1246001642366990319}
-  m_Layer: 0
+  - component: {fileID: 7701785460898621511}
+  m_Layer: 13
   m_Name: Box
   m_TagString: Moveble
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8918173271036309067}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.5, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3358225222127173559}
   m_Father: {fileID: 0}
@@ -95,22 +95,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &5876713038448564683
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8918173271036309067}
-  serializedVersion: 2
-  m_Mass: 1000
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 124
-  m_CollisionDetection: 1
 --- !u!114 &6875508662996868232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +208,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &7701785460898621511
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8918173271036309067}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 124
+  m_CollisionDetection: 0
 --- !u!1001 &3358225222127035703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -234,6 +234,18 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 247041c05327d9f438ffebf46c4ccfc7, type: 3}
       propertyPath: m_Name
       value: "Caixa - C\xF3pia"
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 247041c05327d9f438ffebf46c4ccfc7, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 247041c05327d9f438ffebf46c4ccfc7, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 247041c05327d9f438ffebf46c4ccfc7, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 247041c05327d9f438ffebf46c4ccfc7, type: 3}
       propertyPath: m_LocalPosition.x

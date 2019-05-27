@@ -22,30 +22,30 @@ public class LimitX : MonoBehaviour
     {
         rd = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
-        stayPos.y = transform.position.y;
-        stayPos.x = transform.position.x;
+        stayPos.y = rd.position.y;
+        stayPos.x = rd.position.x;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 aux = transform.position;// transform.TransformPoint(transform.position);
+        Vector3 aux = rd.position;// rd.rdPoint(rd.position);
         if (isHeld)
         {
-            if (stayPos.x != transform.position.x && !audioSource.isPlaying)
+            if (stayPos.x != rd.position.x && !audioSource.isPlaying)
             {
                 audioSource.loop = true;
                 audioSource.PlayOneShot(dragedAudio);
             }
-            else if (stayPos.x == transform.position.x && audioSource.isPlaying)
+            else if (stayPos.x == rd.position.x && audioSource.isPlaying)
             {
                 audioSource.Stop();
             }
-            stayPos.x = transform.position.x;
+            stayPos.x = rd.position.x;
         }
         else aux.x = stayPos.x;
         aux.x = Mathf.Clamp(aux.x, minX, maxX);
         aux.y = stayPos.y;
-        transform.position = aux;//transform.InverseTransformPoint(aux);
+        rd.position = aux;//rd.InverserdPoint(aux);
     }
 }

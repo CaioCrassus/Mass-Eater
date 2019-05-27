@@ -9357,15 +9357,20 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7823460828851809637, guid: 63cb20353f82bbe46a724702fb5072f1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7823460828343617408, guid: 63cb20353f82bbe46a724702fb5072f1,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7823460828851809637, guid: 63cb20353f82bbe46a724702fb5072f1,
+    - target: {fileID: 6108369742041436976, guid: 63cb20353f82bbe46a724702fb5072f1,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.5
+      propertyPath: waitTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1906242444574787077, guid: 63cb20353f82bbe46a724702fb5072f1,
         type: 3}

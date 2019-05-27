@@ -11,6 +11,8 @@ public class Activate : MonoBehaviour
     public AudioClip open;
     public AudioClip close;
 
+    public float waitTime = 1f;
+
     private AudioSource audioSource;
 
     void Start()
@@ -39,7 +41,7 @@ public class Activate : MonoBehaviour
             audioSource.PlayOneShot(open);
         }
 
-        Invoke("BackToMainCamera", .5f);
+        Invoke("BackToMainCamera", waitTime);
     }
 
     void BackToMainCamera()

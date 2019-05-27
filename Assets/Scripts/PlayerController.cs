@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
         instance = this;
         controller = GetComponent<CharacterController>();
         audioSource = GetComponent<AudioSource>();
+        transform.position = respawnPos;
     }
 
     void FixedUpdate()
@@ -134,20 +135,22 @@ public class PlayerController : MonoBehaviour
 
         if (upRay && move.y > 0) move.y = 0;
 
-        if (!climbing && !dashing)
+        if (!climbing)
         {
-            if ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0) && !controller.isGrounded)
+            if (!controller.isGrounded && move.y < 0 && ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0)))
             {
                 onWall = true;
                 if (move.y > 0 && canMove) move.y = 0;
                 move.y -= gravity * Time.fixedDeltaTime * .05f;
+                move.y = Mathf.Max(move.y, -gravity * 0.05f);
             }
             else
             {
                 onWall = false;
-                move.y -= gravity * Time.fixedDeltaTime;
+                if (move.y <= 0) move.y -= gravity * Time.fixedDeltaTime * 1.5f;
+                else move.y -= gravity * Time.fixedDeltaTime;
+                move.y = Mathf.Max(move.y, -gravity);
             }
-            move.y = Mathf.Min(move.y, gravity);
         }
         else if (climbing)
         {
@@ -158,7 +161,7 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = true;
             Debug.Log("Jump");
-            if ((leftRay || rightRay) && !controller.isGrounded)
+            if (!controller.isGrounded && (leftRay || rightRay))
             {
                 move.x = leftRay ? wallJumpSpeed : -wallJumpSpeed;
                 FlipPlayer();
@@ -192,9 +195,9 @@ public class PlayerController : MonoBehaviour
         if (move.x == 0/* && audioSource.isPlaying && audioSource.clip == walkAudio*/) audioSource.Stop();
 
         controller.Move(move * Time.fixedDeltaTime);
-        Vector3 aux = transform.position;
-        aux.z = 0;
-        transform.position = aux;
+        //Vector3 aux = transform.position;
+        //aux.z = 0;
+        //transform.position = aux;
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -263,8 +266,7 @@ public class PlayerController : MonoBehaviour
     public GameObject Lose;
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.Log("Collision");
-        if (hit.gameObject.tag == "Enemy" && canDie && invencibleTimer <= 0)
+        if (hit.gameObject.tag == "Enemy" && canDie && invencibleTimer <= 0 && !hit.gameObject.GetComponent<Enemy>().weakened)
         {
             invencibleTimer = invencibleTime;
             life = Mathf.Clamp(life - 33.4f, 0, 100);
@@ -277,6 +279,10 @@ public class PlayerController : MonoBehaviour
                 Lose.SetActive(true);
                 Time.timeScale = 0;
             }
+        }
+        else if (hit.gameObject.tag == "Enemy" && hit.gameObject.GetComponent<Enemy>().weakened && Input.GetButtonDown("Fire3"))
+        {
+            life += hit.gameObject.GetComponent<Enemy>().mass;
         }
     }
 
