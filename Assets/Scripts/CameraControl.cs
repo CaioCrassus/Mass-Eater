@@ -36,12 +36,12 @@ public class CameraControl : MonoBehaviour
             if (Input.GetButtonDown("Vertical")) lookTimer = lookTimeToActivate;
             if (lookTimer > 0) v = 0;
         }
-        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0, v * upDownLook, 0), .02f);
+        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0, v * upDownLook, 0), .12f);
 
         Vector3 aux = transform.eulerAngles;
         aux.y = map(transform.position.x, limit.minPos.x, limit.maxPos.x, -rotationX, rotationX);
         transform.eulerAngles = aux;
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, limit.minPos.x, limit.maxPos.x), Mathf.Clamp(transform.position.y, limit.minPos.y, limit.maxPos.y), -6);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, limit.minPos.x, limit.maxPos.x), Mathf.Clamp(transform.position.y, limit.minPos.y, limit.maxPos.y), Mathf.Clamp(transform.position.z, limit.minPos.z, limit.maxPos.z));
     }
 
     public void resetTarget()

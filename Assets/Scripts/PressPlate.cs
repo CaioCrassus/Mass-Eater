@@ -24,10 +24,24 @@ public class PressPlate : MonoBehaviour
 
     private AudioSource audioSource;
 
+    public bool justPressed;
+
+    private GameObject objPressing;
+
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
+
+    void Update()
+    {
+        justPressed = false;
+        if (pressed && objPressing == null)
+        {
+            StartCoroutine("ReturnToOrigin");
+        }
+    }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.layer != 9 && col.CompareTag(interactibleTag))
@@ -45,14 +59,16 @@ public class PressPlate : MonoBehaviour
             else if (!triggerOnce)
             {
                 pressed = true;
-                toActivate.run();
+                if (toActivate != null)
+                    toActivate.run();
             }
 
             if (col.CompareTag("Player")) audioSource.clip = player;
             else audioSource.clip = box;
 
             audioSource.Play();
-
+            justPressed = true;
+            objPressing = col.gameObject;
         }
     }
 
@@ -81,10 +97,11 @@ public class PressPlate : MonoBehaviour
 
     IEnumerator ReturnToOrigin()
     {
+        pressed = false;
         if (!triggerOnce && !triggerOnly)
         {
-            pressed = false;
-            toActivate.run();
+            if (toActivate != null)
+                toActivate.run();
         }
         while (origin != transform.parent.position)
         {

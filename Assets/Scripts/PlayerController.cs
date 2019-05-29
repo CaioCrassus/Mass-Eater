@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip landingAudio;
     public AudioClip damageAudio;
 
-    void Start()
+    void Awake()
     {
         instance = this;
         controller = GetComponent<CharacterController>();
@@ -121,7 +121,8 @@ public class PlayerController : MonoBehaviour
             if (isJumping)
             {
                 isJumping = false;
-                audioSource.PlayOneShot(landingAudio);
+                audioSource.PlayOneShot(landingAudio, .2f);
+
             }
         }
 
@@ -172,7 +173,7 @@ public class PlayerController : MonoBehaviour
             {
                 move.y = jumpSpeed;
             }
-            audioSource.PlayOneShot(jumpAudio);
+            audioSource.PlayOneShot(jumpAudio, .2f);
         }
 
         if (justDamaged)
@@ -180,24 +181,24 @@ public class PlayerController : MonoBehaviour
             move.x = speed * damageDirection;
             move.y = jumpSpeed;
             justDamaged = false;
-            audioSource.PlayOneShot(damageAudio);
+            audioSource.PlayOneShot(damageAudio, 1);
         }
 
         //if ((controller.collisionFlags & CollisionFlags.Above) != 0) move.y -= gravity * Time.fixedDeltaTime;
 
         if (controller.isGrounded && move.x != 0 && audioSource.clip != walkAudio && !audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(walkAudio);
-            audioSource.loop = true;
+            //audioSource.PlayOneShot(walkAudio);
+            // audioSource.loop = true;
         }
         CrawlControl();
 
         if (move.x == 0/* && audioSource.isPlaying && audioSource.clip == walkAudio*/) audioSource.Stop();
 
         controller.Move(move * Time.fixedDeltaTime);
-        //Vector3 aux = transform.position;
-        //aux.z = 0;
-        //transform.position = aux;
+        Vector3 aux = transform.position;
+        aux.z = 0;
+        transform.position = aux;
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -268,17 +269,7 @@ public class PlayerController : MonoBehaviour
     {
         if (hit.gameObject.tag == "Enemy" && canDie && invencibleTimer <= 0 && !hit.gameObject.GetComponent<Enemy>().weakened)
         {
-            invencibleTimer = invencibleTime;
-            life = Mathf.Clamp(life - 33.4f, 0, 100);
-            tank.SetBlendShapeWeight(0, life);
-            justDamaged = true;
-            if (hit.transform.position.x > transform.position.x) damageDirection = 1;
-            else damageDirection = -1;
-            if (life <= 0)
-            {
-                Lose.SetActive(true);
-                Time.timeScale = 0;
-            }
+            LoseMass(damageDirection);
         }
         else if (hit.gameObject.tag == "Enemy" && hit.gameObject.GetComponent<Enemy>().weakened && Input.GetButtonDown("Fire3"))
         {
@@ -292,6 +283,21 @@ public class PlayerController : MonoBehaviour
         {
             if (move.x > 0) transform.rotation = new Quaternion(0, 0, 0, 0);
             else if (move.x < 0) transform.localRotation = new Quaternion(0, 180, 0, 0);
+        }
+    }
+
+    public void LoseMass(float x)
+    {
+        invencibleTimer = invencibleTime;
+        life = Mathf.Clamp(life - 33.4f, 0, 100);
+        tank.SetBlendShapeWeight(0, life);
+        if (x > transform.position.x) damageDirection = 1;
+        else damageDirection = -1;
+        justDamaged = true;
+        if (life <= 0)
+        {
+            Lose.SetActive(true);
+            Time.timeScale = 0;
         }
     }
 }

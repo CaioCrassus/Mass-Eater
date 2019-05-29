@@ -24,6 +24,8 @@ public class Scorpion : Enemy
 
     public AudioClip walkSound;
     public AudioClip agroSound;
+
+    public bool attack = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -91,7 +93,7 @@ public class Scorpion : Enemy
             {
                 if (player.transform.position.x < transform.position.x) aux.y = 180;
                 else aux.y = 0;
-                Attack();
+                if (ray) attack = true;
             }
             transform.localEulerAngles = aux;
 
@@ -99,11 +101,9 @@ public class Scorpion : Enemy
             if (controller.isGrounded) move.y = 0;
             else move.y -= gravity * Time.deltaTime;
             controller.Move(move * Time.deltaTime);
+            aux = transform.position;
+            aux.z = 0;
+            transform.position = aux;
         }
-    }
-
-    void Attack()
-    {
-
     }
 }

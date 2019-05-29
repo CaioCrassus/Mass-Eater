@@ -16,7 +16,8 @@ public class CameraLevelLimit : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             CameraControl.limit = this;
-            PlayerController.respawnPos = respawnPos.position;
+            if (respawnPos != null)
+                PlayerController.respawnPos = respawnPos.position;
         }
     }
 

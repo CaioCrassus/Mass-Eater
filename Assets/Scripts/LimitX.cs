@@ -45,7 +45,12 @@ public class LimitX : MonoBehaviour
         }
         else aux.x = stayPos.x;
         aux.x = Mathf.Clamp(aux.x, minX, maxX);
-        aux.y = stayPos.y;
+        //aux.y = stayPos.y;
         rd.position = aux;//rd.InverserdPoint(aux);
+    }
+
+    void DestroyBox()
+    {
+        transform.GetComponentInChildren<ParticleSystem>().Play(true);
     }
 }
