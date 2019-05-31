@@ -16,6 +16,7 @@ public class Graber : MonoBehaviour
         {
             obj.transform.SetParent(Boxes.transform);
             player.holding = false;
+            player.animator.SetBool("holding", false);
             obj = null;
             objPos = Vector3.zero;
         }
@@ -35,6 +36,7 @@ public class Graber : MonoBehaviour
             obj.transform.localPosition = aux;
             objPos = obj.transform.localPosition;
             player.holding = true;
+            player.animator.SetBool("holding", true);
             other.gameObject.GetComponent<LimitX>().isHeld = true;
         }
         if (objPos != Vector3.zero)
@@ -45,6 +47,7 @@ public class Graber : MonoBehaviour
     {
         obj.transform.SetParent(Boxes.transform);
         player.holding = false;
+        player.animator.SetBool("holding", false);
         obj = null;
         objPos = Vector3.zero;
         other.gameObject.GetComponent<LimitX>().isHeld = false;

@@ -11,6 +11,8 @@ public class Bird : Enemy
     private float direction = 1;
     private Vector3 origin;
     public LayerMask platform;
+
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,18 +38,22 @@ public class Bird : Enemy
                     else direction = 1;
                 }
                 move.y = direction * speed;
+                animator.SetFloat("vel", move.y);
             }
             else
             {
-                bool ray = Physics.Raycast(transform.position, transform.right * direction, .45f, platform);
-                Debug.DrawRay(transform.position, transform.right * .45f * direction, Color.white);
+                bool ray = Physics.Raycast(transform.position, transform.right, .45f, platform);
+                Debug.DrawRay(transform.position, transform.right * .45f, Color.white);
 
                 if (ray)
                 {
                     if (direction == 1) direction = -1;
                     else direction = 1;
                 }
+                if (direction > 0) transform.rotation = new Quaternion(0, 0, 0, 0);
+                else if (direction < 0) transform.localRotation = new Quaternion(0, 180, 0, 0);
                 move.x = direction * speed;
+                animator.SetFloat("vel", move.x);
             }
             controller.Move(move * Time.deltaTime);
             Vector3 aux = transform.position;

@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip landingAudio;
     public AudioClip damageAudio;
 
+    public Animator animator;
+
     void Awake()
     {
         instance = this;
@@ -84,13 +86,20 @@ public class PlayerController : MonoBehaviour
         }
 
         move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : move.x;
-        if (move.x != 0)
-        {
-            isMoving = true;
-        }
-        else isMoving = false;
 
         if (!cameraOnPlayer) move.x = 0;
+
+        if (move.x != 0)
+        {
+            animator.SetBool("walking", true);
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
+            animator.SetBool("walking", false);
+        }
+
         /* if (canHold && holding)
         {
             if ((move.x < 0 && transform.rotation.y == 0) || (move.x > 0 && transform.rotation.y == -180))
@@ -117,36 +126,48 @@ public class PlayerController : MonoBehaviour
 
         if (controller.isGrounded)
         {
+            animator.SetBool("grounded", true);
             move.y = 0;
             if (isJumping)
             {
                 isJumping = false;
+                animator.SetBool("jumping", false);
                 audioSource.PlayOneShot(landingAudio, .2f);
 
             }
         }
+        else animator.SetBool("grounded", false);
 
         bool upRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.up, .2f, platformLayer);
         bool rightRay = Physics.Raycast(transform.position + Vector3.up * .45f, Vector3.right, .5f, platformLayer);
         bool leftRay = Physics.Raycast(transform.position + Vector3.up * .45f, -Vector3.right, .5f, platformLayer);
+        bool downRay = Physics.Raycast(transform.position, -Vector3.up, .2f, platformLayer);
 
         Debug.DrawRay(transform.position + Vector3.up * .45f, -transform.right * .45f, Color.white);
         Debug.DrawRay(transform.position + Vector3.up * .45f, transform.right * .45f, Color.white);
         Debug.DrawRay(transform.position + Vector3.up * .45f, transform.up * .2f, Color.white);
+        Debug.DrawRay(transform.position, -transform.up * .2f, Color.white);
+
+        if (downRay) animator.SetBool("grounded", true);
 
         if (upRay && move.y > 0) move.y = 0;
 
         if (!climbing)
         {
+            animator.SetBool("climbing", false);
             if (!controller.isGrounded && move.y < 0 && ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0)))
             {
                 onWall = true;
                 if (move.y > 0 && canMove) move.y = 0;
                 move.y -= gravity * Time.fixedDeltaTime * .05f;
                 move.y = Mathf.Max(move.y, -gravity * 0.05f);
+                animator.SetBool("wallHold", true);
+                animator.SetInteger("wallHoldDir", leftRay ? -1 : 1);
             }
             else
             {
+                Debug.Log("fxyjshjjvbj.bsfkvjr");
+                animator.SetBool("wallHold", false);
                 onWall = false;
                 if (move.y <= 0) move.y -= gravity * Time.fixedDeltaTime * 1.5f;
                 else move.y -= gravity * Time.fixedDeltaTime;
@@ -155,16 +176,20 @@ public class PlayerController : MonoBehaviour
         }
         else if (climbing)
         {
+            animator.SetBool("climbing", true);
             move.y = Input.GetAxis("Vertical") * speed * .8f;
         }
 
         if (Input.GetButtonDown("Jump") && !holding && !crouching)
         {
             isJumping = true;
+            animator.SetBool("jumping", true);
+            animator.SetTrigger("jump");
             Debug.Log("Jump");
-            if (!controller.isGrounded && (leftRay || rightRay))
+            if (!controller.isGrounded && ((leftRay && Input.GetAxis("Horizontal") < 0) || (rightRay && Input.GetAxis("Horizontal") > 0)))
             {
                 move.x = leftRay ? wallJumpSpeed : -wallJumpSpeed;
+                animator.SetBool("crouching", false);
                 FlipPlayer();
                 move.y = jumpSpeed;
                 canMove = false;
@@ -184,17 +209,28 @@ public class PlayerController : MonoBehaviour
             audioSource.PlayOneShot(damageAudio, 1);
         }
 
+        if (holding)
+        {
+            if (transform.localRotation.y == 180) animator.SetInteger("boxDir", -1);
+            else animator.SetInteger("boxDir", 1);
+            move.x = Mathf.Clamp(move.x, -3, 3);
+        }
+
         //if ((controller.collisionFlags & CollisionFlags.Above) != 0) move.y -= gravity * Time.fixedDeltaTime;
 
         if (controller.isGrounded && move.x != 0 && audioSource.clip != walkAudio && !audioSource.isPlaying)
         {
-            //audioSource.PlayOneShot(walkAudio);
-            // audioSource.loop = true;
+            audioSource.PlayOneShot(walkAudio);
+            audioSource.loop = true;
         }
         CrawlControl();
+        if (crouching) move.x = Mathf.Clamp(move.x, -3, 3); ;
 
         if (move.x == 0/* && audioSource.isPlaying && audioSource.clip == walkAudio*/) audioSource.Stop();
-
+        animator.SetInteger("xDir", (int)move.x);
+        animator.SetBool("walking", move.x != 0 ? true : false);
+        animator.SetFloat("yVel", move.y);
+        animator.SetFloat("xVel", move.x);
         controller.Move(move * Time.fixedDeltaTime);
         Vector3 aux = transform.position;
         aux.z = 0;
@@ -221,15 +257,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && controller.isGrounded && !holding)
         {
-            controller.height = .1f;
-            controller.radius = .1f;
+            animator.SetBool("crouching", true);
+            //controller.height = .1f;
+            //controller.radius = .1f;
             crouching = true;
         }
 
         if (Input.GetButtonUp("Fire1"))
         {
-            controller.height = .8f;
-            controller.radius = .3f;
+            animator.SetBool("crouching", false);
+            //controller.height = .8f;
+            //controller.radius = .3f;
             crouching = false;
         }
     }
@@ -248,10 +286,17 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Climbable") && Input.GetButtonDown("Fire3"))
         {
             climbing = true;
+            animator.SetBool("climbing", true);
+            transform.position = new Vector3(other.transform.position.x, transform.position.y, transform.position.z);
+            move.x = 0;
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+            if (move.y == 0) animator.Play("Climbing", 0, 0);
+            if (move.y != 0) animator.Play("Climbing", 0, 1);
         }
         if (other.CompareTag("Climbable") && Input.GetButtonUp("Fire3"))
         {
             climbing = false;
+            animator.SetBool("climbing", false);
         }
     }
 
@@ -259,6 +304,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Climbable"))
         {
+            animator.SetBool("climbing", false);
             climbing = false;
         }
     }
@@ -288,6 +334,7 @@ public class PlayerController : MonoBehaviour
 
     public void LoseMass(float x)
     {
+        animator.SetTrigger("damaged");
         invencibleTimer = invencibleTime;
         life = Mathf.Clamp(life - 33.4f, 0, 100);
         tank.SetBlendShapeWeight(0, life);
@@ -296,6 +343,8 @@ public class PlayerController : MonoBehaviour
         justDamaged = true;
         if (life <= 0)
         {
+            animator.SetTrigger("die");
+            animator.SetBool("dying", true);
             Lose.SetActive(true);
             Time.timeScale = 0;
         }
