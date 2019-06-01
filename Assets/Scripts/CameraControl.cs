@@ -37,7 +37,7 @@ public class CameraControl : MonoBehaviour
             if (lookTimer > 0) v = 0;
         }
         if (PlayerController.instance.climbing || !PlayerController.instance.controller.isGrounded) v = 0;
-        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0, v * upDownLook, 0), .12f);
+        transform.position = Vector3.Lerp(transform.position, target.transform.position + new Vector3(0, v * upDownLook, 0), .05f);
 
         Vector3 aux = transform.eulerAngles;
         aux.y = map(transform.position.x, limit.minPos.x, limit.maxPos.x, -rotationX, rotationX);

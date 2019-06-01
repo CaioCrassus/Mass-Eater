@@ -15,6 +15,8 @@ public class Elevator : MonoBehaviour
     public float speed;
 
     private Vector3 origin;
+
+    private GameObject objPressing;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,11 @@ public class Elevator : MonoBehaviour
             //aux.y = Mathf.Clamp(aux.y, limitYDown, limitYUp);
             transform.position = aux;
         }
+
+        if (active && objPressing == null)
+        {
+            active = false;
+        }
     }
 
     void OnCollisionEnter(Collision col)
@@ -55,6 +62,7 @@ public class Elevator : MonoBehaviour
         {
             Debug.Log("UP");
             active = true;
+            objPressing = col.gameObject;
         }
     }
     void OnCollisionExit(Collision col)

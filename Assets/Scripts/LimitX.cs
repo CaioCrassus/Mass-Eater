@@ -49,8 +49,14 @@ public class LimitX : MonoBehaviour
         rd.position = aux;//rd.InverserdPoint(aux);
     }
 
-    void DestroyBox()
+    public void DestroyBox()
     {
-        transform.GetComponentInChildren<ParticleSystem>().Play(true);
+        //transform.GetComponentInChildren<ParticleSystem>().Play(true);
+        Invoke("DB", .1f);
+    }
+
+    private void DB()
+    {
+        Destroy(gameObject);
     }
 }

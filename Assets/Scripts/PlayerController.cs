@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         audioSource = GetComponent<AudioSource>();
         transform.position = respawnPos;
+        tank.SetBlendShapeWeight(0, life);
     }
 
     void FixedUpdate()
@@ -166,7 +167,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("fxyjshjjvbj.bsfkvjr");
                 animator.SetBool("wallHold", false);
                 onWall = false;
                 if (move.y <= 0) move.y -= gravity * Time.fixedDeltaTime * 1.5f;
@@ -178,6 +178,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("climbing", true);
             move.y = Input.GetAxis("Vertical") * speed * .8f;
+            move.y = Mathf.Clamp(move.y, -2, 2);
         }
 
         if (Input.GetButtonDown("Jump") && !holding && !crouching)
@@ -224,7 +225,7 @@ public class PlayerController : MonoBehaviour
             audioSource.loop = true;
         }
         CrawlControl();
-        if (crouching) move.x = Mathf.Clamp(move.x, -3, 3); ;
+        if (crouching) move.x = Mathf.Clamp(move.x, -2, 2); ;
 
         if (move.x == 0/* && audioSource.isPlaying && audioSource.clip == walkAudio*/) audioSource.Stop();
         animator.SetInteger("xDir", (int)move.x);
@@ -258,16 +259,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButton("Fire1") && controller.isGrounded && !holding)
         {
             animator.SetBool("crouching", true);
-            //controller.height = .1f;
-            //controller.radius = .1f;
+            controller.height = .1f;
+            controller.radius = .1f;
+            controller.center = new Vector3(controller.center.x, .20f, controller.center.z);
             crouching = true;
         }
 
         if (Input.GetButtonUp("Fire1"))
         {
             animator.SetBool("crouching", false);
-            //controller.height = .8f;
-            //controller.radius = .3f;
+            controller.height = .8f;
+            controller.radius = .3f;
+            controller.center = new Vector3(controller.center.x, .55f, controller.center.z);
             crouching = false;
         }
     }
@@ -315,7 +318,7 @@ public class PlayerController : MonoBehaviour
     {
         if (hit.gameObject.tag == "Enemy" && canDie && invencibleTimer <= 0 && !hit.gameObject.GetComponent<Enemy>().weakened)
         {
-            LoseMass(damageDirection);
+            LoseMass(hit.transform.position.x);
         }
         else if (hit.gameObject.tag == "Enemy" && hit.gameObject.GetComponent<Enemy>().weakened && Input.GetButtonDown("Fire3"))
         {
@@ -334,10 +337,11 @@ public class PlayerController : MonoBehaviour
 
     public void LoseMass(float x)
     {
+        Debug.Log("LoseMass");
         animator.SetTrigger("damaged");
         invencibleTimer = invencibleTime;
         life = Mathf.Clamp(life - 33.4f, 0, 100);
-        tank.SetBlendShapeWeight(0, life);
+        //tank.SetBlendShapeWeight(0, life);
         if (x > transform.position.x) damageDirection = 1;
         else damageDirection = -1;
         justDamaged = true;
