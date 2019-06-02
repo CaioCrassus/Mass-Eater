@@ -21,6 +21,9 @@ public class ScorpionAttackBox : MonoBehaviour
         if (col.CompareTag("Player") && transform.parent.GetComponent<Scorpion>().attack)
         {
             col.GetComponent<PlayerController>().LoseMass(transform.position.x);
+            transform.parent.GetComponent<Scorpion>().attack = false;
+            transform.parent.GetComponent<Scorpion>().animator.SetBool("attack", false);
+            gameObject.SetActive(false);
         }
     }
 }

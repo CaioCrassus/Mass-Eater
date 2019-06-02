@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     public bool crouching = false;
     public bool climbing = false;
     private bool dashing = false;
-    private bool canDie = true;
+    public bool canDie = true;
     public bool cameraOnPlayer = true;
     public bool isMoving = false;
     private bool onWall = false;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     private float life = 100;
     public SkinnedMeshRenderer tank;
     private float invencibleTime = .5f;
-    private float invencibleTimer;
+    public float invencibleTimer;
     private bool justDamaged = false;
     private int damageDirection;
 
@@ -88,8 +88,11 @@ public class PlayerController : MonoBehaviour
 
         move.x = canMove && !climbing ? Input.GetAxis("Horizontal") * speed : move.x;
 
-        if (!cameraOnPlayer) move.x = 0;
-
+        if (!cameraOnPlayer)
+        {
+            move.x = 0;
+            move.y = 0;
+        }
         if (move.x != 0)
         {
             animator.SetBool("walking", true);
@@ -178,7 +181,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("climbing", true);
             move.y = Input.GetAxis("Vertical") * speed * .8f;
-            move.y = Mathf.Clamp(move.y, -2, 2);
+            move.y = Mathf.Clamp(move.y, -3, 3);
         }
 
         if (Input.GetButtonDown("Jump") && !holding && !crouching)
@@ -207,6 +210,7 @@ public class PlayerController : MonoBehaviour
             move.x = speed * damageDirection;
             move.y = jumpSpeed;
             justDamaged = false;
+            damageDirection = 0;
             audioSource.PlayOneShot(damageAudio, 1);
         }
 
@@ -236,7 +240,10 @@ public class PlayerController : MonoBehaviour
         Vector3 aux = transform.position;
         aux.z = 0;
         transform.position = aux;
+    }
 
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.I))
         {
             canDie = !canDie;
@@ -247,8 +254,6 @@ public class PlayerController : MonoBehaviour
             canHold = !canHold;
             BoxCheat.SetActive(canHold);
         }
-
-
     }
 
     public GameObject ImortalCheat;
@@ -337,20 +342,24 @@ public class PlayerController : MonoBehaviour
 
     public void LoseMass(float x)
     {
-        Debug.Log("LoseMass");
-        animator.SetTrigger("damaged");
-        invencibleTimer = invencibleTime;
-        life = Mathf.Clamp(life - 33.4f, 0, 100);
-        //tank.SetBlendShapeWeight(0, life);
-        if (x > transform.position.x) damageDirection = 1;
-        else damageDirection = -1;
-        justDamaged = true;
-        if (life <= 0)
+        if (canDie && invencibleTimer <= 0)
         {
-            animator.SetTrigger("die");
-            animator.SetBool("dying", true);
-            Lose.SetActive(true);
-            Time.timeScale = 0;
+            Debug.Log("LoseMass");
+            animator.SetTrigger("damaged");
+            invencibleTimer = invencibleTime;
+            life = Mathf.Clamp(life - 33.4f, 0, 100);
+            //tank.SetBlendShapeWeight(0, life);
+            if (x > transform.position.x) damageDirection = 1;
+            else damageDirection = -1;
+            justDamaged = true;
+            if (life <= 0)
+            {
+                animator.SetTrigger("die");
+                animator.SetBool("dying", true);
+                Lose.SetActive(true);
+                Time.timeScale = 0;
+            }
+            else Camera.main.GetComponent<CameraControl>().ScreenShake();
         }
     }
 }

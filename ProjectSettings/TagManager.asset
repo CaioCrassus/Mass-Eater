@@ -9,6 +9,7 @@ TagManager:
   - Climbable
   - Enemy
   - Trap
+  - Boss
   layers:
   - Default
   - TransparentFX

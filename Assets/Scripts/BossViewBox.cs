@@ -18,7 +18,7 @@ public class BossViewBox : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if ((other.CompareTag("Player") || other.CompareTag("Moveble")) || (other.CompareTag("Player")))
         {
             transform.GetComponentInParent<Boss>().persue = true;
         }
@@ -26,7 +26,7 @@ public class BossViewBox : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if ((other.CompareTag("Player") && other.CompareTag("Moveble")) || (other.CompareTag("Player")))
         {
             transform.GetComponentInParent<Boss>().persue = false;
         }

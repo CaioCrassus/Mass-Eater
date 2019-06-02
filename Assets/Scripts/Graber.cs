@@ -10,6 +10,7 @@ public class Graber : MonoBehaviour
     private Vector3 objPos;
 
     public GameObject Boxes;
+
     void Update()
     {
         if (Input.GetButtonUp("Fire3"))
@@ -19,6 +20,11 @@ public class Graber : MonoBehaviour
             player.animator.SetBool("holding", false);
             obj = null;
             objPos = Vector3.zero;
+        }
+
+        if (player.holding && obj == null)
+        {
+            player.holding = false;
         }
 
     }

@@ -52,7 +52,7 @@ public class LimitX : MonoBehaviour
     public void DestroyBox()
     {
         //transform.GetComponentInChildren<ParticleSystem>().Play(true);
-        Invoke("DB", .1f);
+        Invoke("DB", 1);
     }
 
     private void DB()

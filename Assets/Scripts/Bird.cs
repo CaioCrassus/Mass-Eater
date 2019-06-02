@@ -13,6 +13,15 @@ public class Bird : Enemy
     public LayerMask platform;
 
     public Animator animator;
+
+    private AudioSource audioSource;
+
+    public AudioClip birdFlying;
+    public AudioClip birdAgro;
+
+    public float attackDistance = 2;
+
+    private bool persue;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +64,19 @@ public class Bird : Enemy
                 move.x = direction * speed;
                 animator.SetFloat("vel", move.x);
             }
+            if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) < attackDistance &&
+            !Physics.Raycast(transform.position + new Vector3(0, .45f), (PlayerController.instance.transform.position - transform.position), attackDistance, 9))
+            {
+                persue = true;
+            }
+
+            if (persue)
+            {
+
+            }
+
+
+
             controller.Move(move * Time.deltaTime);
             Vector3 aux = transform.position;
             if (vertical) aux.x = origin.x;

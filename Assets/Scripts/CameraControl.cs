@@ -19,6 +19,14 @@ public class CameraControl : MonoBehaviour
 
     public float lookTimeToActivate = 1f;
     private float lookTimer;
+
+
+    private Vector3 oriPos;
+    private Vector3 maxShake = new Vector3(1, 1, 0);
+    public float shakeSpeed = .2f;
+    public float shakeTime = 1;
+    private float shakeTimer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,5 +61,31 @@ public class CameraControl : MonoBehaviour
     float map(float s, float a1, float a2, float b1, float b2)
     {
         return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
+    }
+
+    public void ScreenShake()
+    {
+        StartCoroutine("ScreenShakeCoroutine");
+    }
+
+
+    IEnumerator ScreenShakeCoroutine()
+    {
+        oriPos = transform.position;
+        shakeTimer = shakeTime;
+        Vector3 move;
+        while (shakeTimer > 0)
+        {
+            shakeTimer -= Time.deltaTime;
+            move = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0) * shakeSpeed;
+            Vector3 aux = transform.position;
+            aux.x = Mathf.Clamp(aux.x, oriPos.x - maxPos.x, oriPos.x + maxPos.x);
+            aux.y = Mathf.Clamp(aux.y, oriPos.y - maxPos.y, oriPos.y + maxPos.y);
+            transform.position = aux + move;
+
+            yield return 0;
+        }
+
+        transform.position = oriPos;
     }
 }

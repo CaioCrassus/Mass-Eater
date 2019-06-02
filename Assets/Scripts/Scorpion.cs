@@ -26,6 +26,10 @@ public class Scorpion : Enemy
     public AudioClip agroSound;
 
     public bool attack = false;
+
+    public Animator animator;
+
+    public ScorpionAttackBox attackBox;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +45,8 @@ public class Scorpion : Enemy
             Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, playerLayer);
 
             GameObject player = null;
+
+            float dstToTarget = 10;
 
             if (targetsInViewRadius.Length > 0)
             {
@@ -62,24 +68,25 @@ public class Scorpion : Enemy
                 }*/
 
                 Vector3 dirToTarget = (player.transform.position - transform.position).normalized;
-                float dstToTarget = Vector3.Distance(transform.position, player.transform.position);
+                dstToTarget = Vector3.Distance(transform.position, player.transform.position);
                 if (playerOnView && !Physics.Raycast(transform.position + new Vector3(0, .45f), dirToTarget, dstToTarget, platformLayer))
                 {
                     Debug.DrawRay(transform.position, dirToTarget * 100000, Color.white);
                     persue = true;
-                    if (!audioSource.isPlaying) audioSource.PlayOneShot(agroSound);
+                    if (!audioSource.isPlaying && audioSource.clip == agroSound) audioSource.PlayOneShot(agroSound);
                 }
                 else
                 {
                     persue = false;
-                    if (!audioSource.isPlaying) audioSource.PlayOneShot(walkSound);
+                    if (!audioSource.isPlaying && audioSource.clip == walkSound) audioSource.PlayOneShot(walkSound);
                 }
             }
 
 
-            bool ray = Physics.Raycast(transform.position + Vector3.up * 0.20f, transform.right, .8f, platformLayer);
+
+            bool ray = Physics.Raycast(transform.position + Vector3.up * 0.25f, transform.right, .8f, platformLayer);
             bool down = Physics.Raycast(transform.position + transform.right * 0.45f, Vector3.down, .8f, platformLayer);
-            Debug.DrawRay(transform.position + Vector3.up * 0.20f, transform.right * .8f, Color.white);
+            Debug.DrawRay(transform.position + Vector3.up * 0.25f, transform.right * .8f, Color.white);
             Debug.DrawRay(transform.position + transform.right * 0.45f, Vector3.down * .8f, Color.white);
 
             Vector3 aux = transform.localEulerAngles;
@@ -91,19 +98,51 @@ public class Scorpion : Enemy
             }
             if (persue && player != null)
             {
-                if (player.transform.position.x < transform.position.x) aux.y = 180;
-                else aux.y = 0;
-                if (ray) attack = true;
+                float dist = Mathf.Abs(player.transform.position.x - transform.position.x);
+                //if (player.transform.position.x < transform.position.x && dist > 1) aux.y = 180;
+                //else if (dist > 1) aux.y = 0;
+                if (dstToTarget < 1 && player.GetComponent<PlayerController>().invencibleTimer <= 0)
+                {
+                    attackBox.gameObject.SetActive(true);
+                    attack = true;
+                    animator.SetBool("attack", true);
+                    move.x = 0;
+                }
             }
             transform.localEulerAngles = aux;
 
             move.x = transform.right.x * (persue ? persueSpeed : speed);
             if (controller.isGrounded) move.y = 0;
             else move.y -= gravity * Time.deltaTime;
+
+            if (attack) move.x = 0;
+
+            animator.SetFloat("xVel", move.x);
+
             controller.Move(move * Time.deltaTime);
             aux = transform.position;
             aux.z = 0;
             transform.position = aux;
+        }
+        else
+        {
+            if (controller.isGrounded) move.y = 0;
+            else move.y -= gravity * Time.deltaTime;
+            move.x = 0;
+
+            controller.Move(move * Time.deltaTime);
+        }
+
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Trap"))
+        {
+            weakened = true;
+            animator.SetBool("damaged", true);
+            animator.SetBool("die", true);
+            Invoke("Die", timeToDestroy);
         }
     }
 }

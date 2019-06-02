@@ -1102,6 +1102,7 @@ MonoBehaviour:
   holding: 0
   crouching: 0
   climbing: 0
+  canDie: 1
   cameraOnPlayer: 1
   isMoving: 0
   dashDuration: 0.5
@@ -1111,7 +1112,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   tank: {fileID: 2976060411079340977}
-  walkAudio: {fileID: 8300000, guid: 29208973f8cf0d84490216dd8665f21a, type: 3}
+  invencibleTimer: 0
+  walkAudio: {fileID: 0}
   jumpAudio: {fileID: 8300000, guid: b56694b54b1b75d45a4125d404f64850, type: 3}
   landingAudio: {fileID: 8300000, guid: b0d6112e224036e44b3745dc4feb6d2b, type: 3}
   damageAudio: {fileID: 8300000, guid: 6eb0903fd8ddf0f4b92661d34c5eacd6, type: 3}
@@ -1144,7 +1146,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6622666942430552844}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!82 &1284298607862958898
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1158,7 +1160,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0

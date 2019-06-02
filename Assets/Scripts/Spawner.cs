@@ -13,8 +13,6 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        if (pp.justPressed)
-            SpawnObject();
     }
 
 
@@ -25,5 +23,6 @@ public class Spawner : MonoBehaviour
             Destroy(spawn);
         }
         spawn = Instantiate(prefab, transform.position, Quaternion.identity);
+        Debug.Log("Spawn");
     }
 }

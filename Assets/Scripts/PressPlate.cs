@@ -26,7 +26,11 @@ public class PressPlate : MonoBehaviour
 
     public bool justPressed;
 
-    private GameObject objPressing;
+    public GameObject objPressing;
+
+    public Spawner spawner;
+
+    public bool destroyPressingObject;
 
     public void Start()
     {
@@ -68,7 +72,11 @@ public class PressPlate : MonoBehaviour
 
             audioSource.Play();
             justPressed = true;
+            if (spawner != null)
+                spawner.SpawnObject();
             objPressing = col.gameObject;
+
+            //if (col.CompareTag("Moveble") && destroyPressingObject) objPressing.GetComponent<LimitX>().DestroyBox();
         }
     }
 
