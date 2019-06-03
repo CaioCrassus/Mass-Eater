@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 
     public bool weakened = false;
 
-    public float timeToDestroy = 10;
+    public float timeToDestroy = 5;
 
     public float mass = 10;
     // Start is called before the first frame update

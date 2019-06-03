@@ -215,7 +215,7 @@ MonoBehaviour:
   viewAngle: 30
   viewRadius: 10
   playerOnView: 0
-  walkSound: {fileID: 8300000, guid: 319cfd65bde349d4a85e3da6447506b6, type: 3}
+  walkSound: {fileID: 8300000, guid: 62932838b10ad5049b97f489e1ca4385, type: 3}
   agroSound: {fileID: 8300000, guid: e7378bfc63bf93943a277e9d1f406516, type: 3}
   attack: 0
   animator: {fileID: 5626487489958009709}
@@ -231,11 +231,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243480041965747812, guid: 97bce902d2c048e48a069f5efefff716,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 319cfd65bde349d4a85e3da6447506b6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 62932838b10ad5049b97f489e1ca4385, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -468,10 +468,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Escorpi\xE3o animado"
       objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: 2866cd7abcfd5504089346b51fae6180, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 458fb87eb6c601b4e8e381ca28c86bc8, type: 2}
     - target: {fileID: 400042, guid: 2866cd7abcfd5504089346b51fae6180, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -528,6 +524,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 2866cd7abcfd5504089346b51fae6180, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 458fb87eb6c601b4e8e381ca28c86bc8, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2866cd7abcfd5504089346b51fae6180, type: 3}
 --- !u!4 &5626487489967862951 stripped

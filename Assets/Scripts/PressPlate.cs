@@ -14,7 +14,7 @@ public class PressPlate : MonoBehaviour
     private Vector3 origin;
     private Vector3 pressedPos;
 
-    public Activate toActivate;
+    public Activate[] toActivate;
 
     public string interactibleTag;
 
@@ -57,14 +57,34 @@ public class PressPlate : MonoBehaviour
             if (triggerOnce && triggerOnceCheck)
             {
                 pressed = true;
-                toActivate.run();
+                foreach (Activate a in toActivate)
+                {
+                    if (a != null)
+                    {
+                        if (spawner != null && spawner.spawn == null)
+                            a.run();
+                        else if (spawner == null)
+                            a.run();
+                    }
+                }
                 triggerOnceCheck = false;
             }
             else if (!triggerOnce)
             {
                 pressed = true;
                 if (toActivate != null)
-                    toActivate.run();
+                {
+                    foreach (Activate a in toActivate)
+                    {
+                        if (a != null)
+                        {
+                            if (spawner != null && spawner.spawn == null)
+                                a.run();
+                            else if (spawner == null)
+                                a.run();
+                        }
+                    }
+                }
             }
 
             if (col.CompareTag("Player")) audioSource.clip = player;
@@ -72,7 +92,7 @@ public class PressPlate : MonoBehaviour
 
             audioSource.Play();
             justPressed = true;
-            if (spawner != null)
+            if (spawner != null && spawner.spawn == null)
                 spawner.SpawnObject();
             objPressing = col.gameObject;
 
@@ -109,7 +129,17 @@ public class PressPlate : MonoBehaviour
         if (!triggerOnce && !triggerOnly)
         {
             if (toActivate != null)
-                toActivate.run();
+            {
+                foreach (Activate a in toActivate)
+                {
+                    {
+                        if (spawner != null && spawner.spawn == null)
+                            a.run();
+                        else if (spawner == null)
+                            a.run();
+                    }
+                }
+            }
         }
         while (origin != transform.parent.position)
         {

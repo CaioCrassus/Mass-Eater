@@ -90,4 +90,14 @@ public class Bird : Enemy
                 controller.Move(-transform.up * speed);
         }
     }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Trap"))
+        {
+            weakened = true;
+            Invoke("Die", 10);
+            animator.SetBool("die", true);
+        }
+    }
 }

@@ -18,7 +18,7 @@ public class BossAttackBox : MonoBehaviour
 
     void OnTriggerStay(Collider col)
     {
-        if (col.CompareTag("Player") && transform.parent.GetComponent<Boss>().attack)
+        if (col.CompareTag("Player") && transform.parent.GetComponent<Boss>().attack && transform.parent.GetComponent<Boss>().coolDownAttackTimer <= 0)
         {
             Debug.Log("Boss Hit");
             col.GetComponent<PlayerController>().LoseMass(transform.position.x);

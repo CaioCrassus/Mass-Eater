@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DeactivateOnTrigger : MonoBehaviour
 {
-    public GameObject[] deactivateList;
+    public GameObject[] List;
+    public bool[] active;
 
     public PressPlate pp;
     // Start is called before the first frame update
@@ -23,10 +24,10 @@ public class DeactivateOnTrigger : MonoBehaviour
     {
         if (col.CompareTag("Boss"))
         {
-            col.GetComponent<Boss>().LoseMass();
-            foreach (GameObject obj in deactivateList)
+            //col.GetComponent<Boss>().LoseMass();
+            for (int i = 0; i < List.Length; i++)
             {
-                obj.SetActive(false);
+                List[i].SetActive(active[i]);
             }
         }
         pp.objPressing.GetComponent<LimitX>().DestroyBox();

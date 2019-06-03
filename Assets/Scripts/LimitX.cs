@@ -59,4 +59,13 @@ public class LimitX : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+
+    /* void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.CompareTag("Boss") && rd.velocity.y < 0)
+        {
+            col.gameObject.GetComponent<Boss>().LoseMass();
+        }
+    }*/
 }

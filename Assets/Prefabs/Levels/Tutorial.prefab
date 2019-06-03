@@ -523,9 +523,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
         type: 3}
+      propertyPath: toActivate.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
+        type: 3}
       propertyPath: toActivate
       value: 
-      objectReference: {fileID: 2156917229883386114}
+      objectReference: {fileID: 0}
     - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
         type: 3}
       propertyPath: interactibleTag
@@ -536,6 +541,11 @@ PrefabInstance:
       propertyPath: triggerOnce
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
+        type: 3}
+      propertyPath: toActivate.Array.data[0]
+      value: 
+      objectReference: {fileID: 2156917229883386114}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffc790e2ed596e64ab6950454a3b4833, type: 3}
 --- !u!4 &5241680650697354126 stripped
@@ -5868,9 +5878,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
         type: 3}
+      propertyPath: toActivate.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
+        type: 3}
       propertyPath: toActivate
       value: 
-      objectReference: {fileID: 2431733211645648762}
+      objectReference: {fileID: 0}
     - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
         type: 3}
       propertyPath: interactibleTag
@@ -5881,6 +5896,11 @@ PrefabInstance:
       propertyPath: triggerOnly
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3440721059459921637, guid: ffc790e2ed596e64ab6950454a3b4833,
+        type: 3}
+      propertyPath: toActivate.Array.data[0]
+      value: 
+      objectReference: {fileID: 2431733211645648762}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffc790e2ed596e64ab6950454a3b4833, type: 3}
 --- !u!4 &5898802997842737353 stripped

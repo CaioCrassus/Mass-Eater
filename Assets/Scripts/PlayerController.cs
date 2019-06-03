@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
     public Animator animator;
 
+    public GameObject winScreen;
+
     void Awake()
     {
         instance = this;
@@ -202,6 +204,11 @@ public class PlayerController : MonoBehaviour
             {
                 move.y = jumpSpeed;
             }
+            else if (climbing)
+            {
+                move.x = Input.GetAxis("Horizontal") * speed;
+                move.y = jumpSpeed;
+            }
             audioSource.PlayOneShot(jumpAudio, .2f);
         }
 
@@ -218,7 +225,7 @@ public class PlayerController : MonoBehaviour
         {
             if (transform.localRotation.y == 180) animator.SetInteger("boxDir", -1);
             else animator.SetInteger("boxDir", 1);
-            move.x = Mathf.Clamp(move.x, -3, 3);
+            move.x = Mathf.Clamp(move.x, -2, 2);
         }
 
         //if ((controller.collisionFlags & CollisionFlags.Above) != 0) move.y -= gravity * Time.fixedDeltaTime;
@@ -253,6 +260,17 @@ public class PlayerController : MonoBehaviour
         {
             canHold = !canHold;
             BoxCheat.SetActive(canHold);
+        }
+
+        if (Boss.bossDefeated)
+        {
+            Invoke("ActivateWin", 1.5f);
+        }
+
+        if (Input.GetButtonUp("Fire3"))
+        {
+            climbing = false;
+            animator.SetBool("climbing", false);
         }
     }
 
@@ -301,11 +319,7 @@ public class PlayerController : MonoBehaviour
             if (move.y == 0) animator.Play("Climbing", 0, 0);
             if (move.y != 0) animator.Play("Climbing", 0, 1);
         }
-        if (other.CompareTag("Climbable") && Input.GetButtonUp("Fire3"))
-        {
-            climbing = false;
-            animator.SetBool("climbing", false);
-        }
+
     }
 
     void OnTriggerExit(Collider other)
@@ -347,8 +361,8 @@ public class PlayerController : MonoBehaviour
             Debug.Log("LoseMass");
             animator.SetTrigger("damaged");
             invencibleTimer = invencibleTime;
-            life = Mathf.Clamp(life - 33.4f, 0, 100);
-            //tank.SetBlendShapeWeight(0, life);
+            life = Mathf.Clamp(life - 20f, 0, 100);
+            tank.SetBlendShapeWeight(0, life);
             if (x > transform.position.x) damageDirection = 1;
             else damageDirection = -1;
             justDamaged = true;
@@ -361,5 +375,10 @@ public class PlayerController : MonoBehaviour
             }
             else Camera.main.GetComponent<CameraControl>().ScreenShake();
         }
+    }
+
+    void ActivateWin()
+    {
+        winScreen.SetActive(true);
     }
 }

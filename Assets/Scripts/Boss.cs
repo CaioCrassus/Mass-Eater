@@ -29,16 +29,20 @@ public class Boss : MonoBehaviour
     public GameObject attackBox;
 
     public float coolDownAttackTime = 2;
-    private float coolDownAttackTimer;
+    public float coolDownAttackTimer;
 
     private bool damaged = false;
     private int damagedDir;
 
-    public float stunTime = 2;
+    public float stunTime = 1;
     private float stunTimer;
 
     public bool weak;
     public bool died;
+
+    public Activate lastButtonDoor;
+
+    public static bool bossDefeated;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +50,7 @@ public class Boss : MonoBehaviour
         controller = GetComponent<CharacterController>();
         audioSource = GetComponent<AudioSource>();
         player = PlayerController.instance;
+        //weak = true;
     }
 
     // Update is called once per frame
@@ -102,11 +107,13 @@ public class Boss : MonoBehaviour
                 move.y = 0;
             }
 
-            if (weak)
+            if (life == 1)
             {
                 if (Mathf.Abs(-35 - transform.position.x) >= .05f)
                     move.x = speed * (transform.position.x < -35 ? 1 : -1);
                 else move.x = 0;
+                if (controller.isGrounded) move.y = 0;
+                else move.y -= gravity * Time.deltaTime;
             }
 
             controller.Move(move);
@@ -119,11 +126,11 @@ public class Boss : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.CompareTag("Moveble") && hit.gameObject.GetComponent<Rigidbody>().velocity.y < 0)
+        /* if (hit.gameObject.tag == "Moveble")// && hit.gameObject.GetComponent<Rigidbody>().velocity.y < 0)
         {
             hit.gameObject.GetComponent<LimitX>().DestroyBox();
             if (life == 1) LoseMass();
-        }
+        }*/
     }
 
     void OnTriggerEnter(Collider col)
@@ -133,6 +140,7 @@ public class Boss : MonoBehaviour
             damaged = true;
             //animator.SetBool("damaged", true);
             damagedDir = (col.transform.position.x > transform.position.x) ? -1 : 1;
+            LoseMass();
         }
     }
 
@@ -143,17 +151,19 @@ public class Boss : MonoBehaviour
 
     public void LoseMass()
     {
-        Debug.Log("Boss Lost Mass");
         life -= 1;
         stunTimer = stunTime;
         if (life == 1)
         {
-            weak = true;
+            //weak = true;
+            lastButtonDoor.run();
+            stunTimer = -1;
         }
-        if (life <= 0)
+        Debug.Log(life);
+        if (life == 0)
         {
-            //animator.SetBool("Die", true);
             Die();
+            //animator.SetBool("Die", true);
         }
     }
 
@@ -161,6 +171,9 @@ public class Boss : MonoBehaviour
     {
         Debug.Log("Died");
         died = true;
+        bossDefeated = true;
+
+
         Destroy(gameObject);
     }
 }

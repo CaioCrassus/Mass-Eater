@@ -6,7 +6,7 @@ public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
     public bool singleSpawn;
-    private GameObject spawn;
+    public GameObject spawn;
 
     public PressPlate pp;
 

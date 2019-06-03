@@ -15,6 +15,8 @@ public class Activate : MonoBehaviour
 
     private AudioSource audioSource;
 
+    public bool activateOnce;
+    private bool activatedOnce = false;
     void Start()
     {
         mainCam = Camera.main;
@@ -23,9 +25,13 @@ public class Activate : MonoBehaviour
 
     public void run()
     {
-        mainCam.gameObject.GetComponent<CameraControl>().target = obj;
-        PlayerController.instance.cameraOnPlayer = false;
-        Invoke("runMecanism", .8f);
+        if (!activateOnce || !activatedOnce)
+        {
+            mainCam.gameObject.GetComponent<CameraControl>().target = obj;
+            PlayerController.instance.cameraOnPlayer = false;
+            Invoke("runMecanism", .8f);
+            activatedOnce = true;
+        }
     }
 
     void runMecanism()
@@ -48,5 +54,6 @@ public class Activate : MonoBehaviour
     {
         mainCam.gameObject.GetComponent<CameraControl>().resetTarget();
         PlayerController.instance.cameraOnPlayer = true;
+        //if (deactivateControlAfterUse) Destroy(this);
     }
 }

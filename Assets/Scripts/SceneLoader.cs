@@ -8,6 +8,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadGame()
     {
         SceneManager.LoadScene("Game");
+        Boss.bossDefeated = false;
     }
 
     public void LoadMenu()
