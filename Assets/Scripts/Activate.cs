@@ -39,11 +39,13 @@ public class Activate : MonoBehaviour
         if (obj.activeSelf)
         {
             obj.SetActive(false);
+            if(close != null)
             audioSource.PlayOneShot(close);
         }
         else
         {
             obj.SetActive(true);
+            if(open != null)
             audioSource.PlayOneShot(open);
         }
 
